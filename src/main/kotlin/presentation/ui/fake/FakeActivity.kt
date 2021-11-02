@@ -1,17 +1,22 @@
 package presentation.ui.fake
 
-import data.datasource.web.WebDataSource
+import data.repository.datarepository.DataRepository
 import data.repository.datarepository.impl.WebDataRepository
 import domain.entity.Data
+import domain.usecase.getdata.GetDataUseCase
 import domain.usecase.getdata.RealGetDataUseCase
+import org.koin.java.KoinJavaComponent.inject
 import presentation.presenter.FakeActivityPresenter
 
-class FakeActivity : FakeView{
+class FakeActivity : FakeView {
 
-    /**---------skipped part with DI---------**/
+    private val getDataUseCase by inject<GetDataUseCase>(RealGetDataUseCase::class.java)
+
+    private val dataRepository by inject<DataRepository>(WebDataRepository::class.java)
+
     private val presenter: FakeActivityPresenter = FakeActivityPresenter(
-        getDataUseCase = RealGetDataUseCase(WebDataRepository(WebDataSource())),
-        dataRepository = WebDataRepository(WebDataSource())
+        getDataUseCase = getDataUseCase,
+        dataRepository = dataRepository
     )
 
     /**---------skipped part with MVP---------**/
@@ -26,11 +31,11 @@ class FakeActivity : FakeView{
         presenter.onSendDataClick(data)
     }
 
-    private fun displayReceivedData(data: Data){
+    private fun displayReceivedData(data: Data) {
         println(data)
     }
 
-    private fun getDataFromField(): Data{
-        return Data(54,"data from field")
+    private fun getDataFromField(): Data {
+        return Data(54, "data from field")
     }
 }

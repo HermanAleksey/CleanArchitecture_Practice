@@ -11,8 +11,11 @@ repositories {
     mavenCentral()
 }
 
+val koin_version= "3.1.3"
+
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("io.insert-koin:koin-core:$koin_version")
 }
 
 tasks.test {
